@@ -6,29 +6,69 @@
         xmlns:local="clr-namespace:ConnectApp"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="600">
+    <Window.Resources>
+        <Style x:Key="ConsoleTextBox" TargetType="{x:Type TextBox}">
+            <Setter Property="IsReadOnly" Value="True"/>
+            <Setter Property="AcceptsReturn" Value="True"/>
+            <Setter Property="Background" Value="Black"/>
+            <Setter Property="Foreground" Value="Wheat"/>
+            <Setter Property="FontFamily" Value="Courier New"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <ScrollViewer RenderTransformOrigin="0.5,0.5" VerticalScrollBarVisibility="Auto">
+                            <ScrollViewer.RenderTransform>
+                                <TransformGroup>
+                                    <RotateTransform Angle="180"/>
+                                    <ScaleTransform ScaleX="-1"/>
+                                </TransformGroup>
+                            </ScrollViewer.RenderTransform>
+                            <TextBox
+                                Text="{TemplateBinding Text}"
+                                IsReadOnly="{TemplateBinding IsReadOnly}"
+                                AcceptsReturn="{TemplateBinding AcceptsReturn}"
+                                Background="{TemplateBinding Background}"
+                                Foreground="{TemplateBinding Foreground}"
+                                FontFamily="{TemplateBinding FontFamily}"
+                                RenderTransformOrigin="0.5,0.5">
+                                <TextBox.RenderTransform>
+                                    <ScaleTransform ScaleY="-1"/>
+                                </TextBox.RenderTransform>
+                            </TextBox>
+                        </ScrollViewer>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="10"/>
             <ColumnDefinition Width="40"/>
             <ColumnDefinition Width="80"/>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="80"/>
-            <ColumnDefinition Width="10"/>
-            <ColumnDefinition Width="80"/>
             <ColumnDefinition Width="10"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="10"/>
             <RowDefinition Height="25"/>
-            <RowDefinition Height="10"/>
+            <RowDefinition Height="5"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="5"/>
+            <RowDefinition Height="25"/>
             <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
         <TextBlock Grid.Column="1" Grid.Row="1" Text="Port:" Margin="0,0,4,0" HorizontalAlignment="Right" VerticalAlignment="Center"/>
         <ComboBox Grid.Column="2" Grid.Row="1" ItemsSource="{Binding PortsList}" SelectedItem="{Binding SelectedPort}"/>
-        <TextBlock Grid.Column="3" Grid.Row="1" Text="{Binding ConnectStatus}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <Button Grid.Column="4" Grid.Row="1" Content="Connect" IsEnabled="{Binding IsDisconnected}" Click="ConnectButton_Click"/>
-        <Button Grid.Column="6" Grid.Row="1" Content="Disconnect" IsEnabled="{Binding IsConnected}" Click="DisconnectButton_Click"/>
-        <TextBox Grid.Column="1" Grid.ColumnSpan="6" Grid.Row="3" AcceptsReturn="True" IsReadOnly="True" Text="{Binding LogString, Mode=OneWay}"/>
+        <DockPanel Grid.Column="3" Grid.Row="1">
+            <Button DockPanel.Dock="Right" Width="80" Content="Disconnect" IsEnabled="{Binding IsConnected}" Click="DisconnectButton_Click"/>
+            <Button DockPanel.Dock="Right" Width="80" Content="Connect" IsEnabled="{Binding IsDisconnected}" Click="ConnectButton_Click"/>
+            <TextBlock DockPanel.Dock="Right" Text="{Binding ConnectStatus}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </DockPanel>
+        <TextBox Grid.Column="1" Grid.ColumnSpan="6" Grid.Row="3" Style="{StaticResource ConsoleTextBox}" Text="{Binding LogString, Mode=OneWay}"/>
+        <DockPanel Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="5">
+            <Button DockPanel.Dock="Left" Width="80" Content="Clear" Click="ClearButton_Click"/>
+            <TextBlock/>
+        </DockPanel>
     </Grid>
 </Window>
