@@ -107,15 +107,26 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AdvancedSerial.h" />
     <ClInclude Include="Button.h" />
+    <ClInclude Include="Defines.h" />
+    <ClInclude Include="StateManager.h" />
     <ClInclude Include="Toggle.h" />
     <ClInclude Include="__vm\.DoorLock.vsarduino.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AdvancedSerial.cpp" />
     <ClCompile Include="Button.cpp" />
+    <ClCompile Include="States\closedState.cpp" />
+    <ClCompile Include="States\listenForEmptyState.cpp" />
+    <ClCompile Include="States\listenForMasterState.cpp" />
+    <ClCompile Include="States\lockingState.cpp" />
+    <ClCompile Include="States\openedState.cpp" />
+    <ClCompile Include="States\saveNewTagState.cpp" />
+    <ClCompile Include="States\listenForUnlockState.cpp" />
+    <ClCompile Include="StateManager.cpp" />
+    <ClCompile Include="States\lockedState.cpp" />
     <ClCompile Include="Toggle.cpp" />
+    <ClCompile Include="States\unlockingState.cpp" />
+    <ClCompile Include="States\unlockedState.cpp" />
   </ItemGroup>
   <PropertyGroup>
     <DebuggerFlavor>VisualMicroDebugger</DebuggerFlavor>

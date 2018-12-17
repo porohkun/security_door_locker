@@ -1,7 +1,7 @@
 #include "Arduino.h"
 #include "Toggle.h"
 
-Toggle::Toggle(int pin, void(*onSwitch)(Toggle* sender, bool on))
+Toggle::Toggle(byte pin, void(*onSwitch)(Toggle* sender, bool on))
 {
 	pinMode(pin, INPUT_PULLUP);
 	_pin = pin;

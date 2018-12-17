@@ -4,13 +4,13 @@
 class Toggle
 {
 public:
-	Toggle(int pin, void(*onSwitch)(Toggle* sender, bool on));
+	Toggle(byte pin, void(*onSwitch)(Toggle* sender, bool on));
 	void Read();
 	bool IsOn() { return _state; }
 
 private:
-	int _pin;
-	int _pinState;
+	byte _pin;
+	byte _pinState;
 	bool _state;
 	bool _nextState;
 	void(*onSwitch)(Toggle* sender, bool on);

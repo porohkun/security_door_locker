@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="States">
+      <UniqueIdentifier>{ad281e8c-e23f-476d-8f77-26853277320a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="DoorLock.ino" />
@@ -27,7 +30,10 @@
     <ClInclude Include="Toggle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AdvancedSerial.h">
+    <ClInclude Include="StateManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Defines.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -38,8 +44,38 @@
     <ClCompile Include="Toggle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AdvancedSerial.cpp">
+    <ClCompile Include="StateManager.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="States\closedState.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
+    <ClCompile Include="States\listenForEmptyState.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
+    <ClCompile Include="States\listenForMasterState.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
+    <ClCompile Include="States\listenForUnlockState.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
+    <ClCompile Include="States\lockingState.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
+    <ClCompile Include="States\openedState.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
+    <ClCompile Include="States\saveNewTagState.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
+    <ClCompile Include="States\unlockedState.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
+    <ClCompile Include="States\unlockingState.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
+    <ClCompile Include="States\lockedState.cpp">
+      <Filter>States</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

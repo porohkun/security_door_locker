@@ -1,28 +1,55 @@
 #include "Arduino.h"
 #include "Button.h"
 
-Button::Button(int pin, void(*onClick)(Button* sender))
+void ButtonClass::SetButtons(byte *pins, byte length)
 {
-	pinMode(pin, INPUT_PULLUP);
-	_pin = pin;
-	this->onClick = onClick;
+	_length = length;
+	_pins = pins;
+	_states = new bool[_length];
+	_prevStates = new bool[_length];
+	for (byte i = 0; i < _length; i++)
+		pinMode(_pins[i], INPUT_PULLUP);
 }
 
-void Button::Read()
+void ButtonClass::Loop()
 {
-	_pinState = digitalRead(_pin);
-
-	if (_pinState == HIGH)
+	for (byte i = 0; i < _length; i++)
 	{
-		if (_state != _nextState)
-		{
-			_state = _nextState;
-			if (this->onClick != NULL)
-				this->onClick(this);
-		}
-	}
-	else
-	{
-		_nextState = !_state;
+		_prevStates[i] = _states[i];
+		_states[i] = digitalRead(_pins[i]) == LOW;
 	}
 }
+
+bool ButtonClass::GetDown(byte pin)
+{
+	byte i = this->GetIndex(pin);
+	if (i == 255)
+		return false;
+	return _states[i] && !_prevStates[i];
+}
+
+bool ButtonClass::GetUp(byte pin)
+{
+	byte i = this->GetIndex(pin);
+	if (i == 255)
+		return false;
+	return !_states[i] && _prevStates[i];
+}
+
+bool ButtonClass::GetState(byte pin)
+{
+	byte i = this->GetIndex(pin);
+	if (i == 255)
+		return false;
+	return _states[i];
+}
+
+byte ButtonClass::GetIndex(byte pin)
+{
+	for (byte i = 0; i < _length; i++)
+		if (_pins[i] == pin)
+			return i;
+	return 255;
+}
+
+ButtonClass Button;
