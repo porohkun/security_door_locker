@@ -5,7 +5,7 @@
 void StateManagerClass::Init()
 {
 	byte buttons[] = { BTN_INTERNAL, BTN_EXTERNAL, BTN_NFC, BTN_LOCKED, REED_SWITCH };
-	Button.SetButtons(buttons, sizeof(buttons) / sizeof(byte));
+	Button.SetButtons(buttons);
 	this->SwitchStateTo(_currentState);
 }
 
