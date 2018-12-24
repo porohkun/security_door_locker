@@ -22,3 +22,6 @@ void unlockingStateLoop()
 	else if (Button.GetUp(REED_SWITCH))
 		StateManager.SwitchStateTo(STATE_OPENED);
 }
+
+
+void unlockingStateExit() {}

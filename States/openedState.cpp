@@ -19,6 +19,9 @@ void openedStateLoop()
 
 	if (Button.GetDown(REED_SWITCH))
 		StateManager.SwitchStateTo(STATE_CLOSED);
-	else if ((Button.GetUp(BTN_INTERNAL)&& Button.GetState(BTN_EXTERNAL))||(Button.GetUp(BTN_EXTERNAL) && Button.GetState(BTN_INTERNAL)))
+	else if ((Button.GetDown(BTN_INTERNAL) && Button.GetState(BTN_EXTERNAL)) || (Button.GetDown(BTN_EXTERNAL) && Button.GetState(BTN_INTERNAL)))
 		StateManager.SwitchStateTo(STATE_LISTEN_FOR_MASTER);
 }
+
+
+void openedStateExit() {}

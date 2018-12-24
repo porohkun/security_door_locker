@@ -54,8 +54,45 @@ void StateManagerClass::Loop()
 
 void StateManagerClass::SwitchStateTo(byte state)
 {
+	switch (_currentState)
+	{
+	case STATE_LOCKED:
+		lockedStateExit();
+		break;
+	case STATE_LISTEN_FOR_UNLOCK:
+		listenForUnlockStateExit();
+		break;
+	case STATE_UNLOCKING:
+		unlockingStateExit();
+		break;
+	case STATE_UNLOCKED:
+		unlockedStateExit();
+		break;
+	case STATE_OPENED:
+		openedStateExit();
+		break;
+	case STATE_CLOSED:
+		closedStateExit();
+		break;
+	case STATE_LOCKING:
+		lockingStateExit();
+		break;
+	case STATE_LISTEN_FOR_MASTER:
+		listenForMasterStateExit();
+		break;
+	case STATE_LISTEN_FOR_EMPTY:
+		listenForEmptyStateExit();
+		break;
+	case STATE_SAVE_NEW_TAG:
+		saveNewTagStateExit();
+		break;
+	default:
+		break;
+	}
+
 	_currentState = state;
 	_isTimeouting = false;
+
 	switch (_currentState)
 	{
 	case STATE_LOCKED:

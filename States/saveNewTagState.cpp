@@ -19,3 +19,6 @@ void saveNewTagStateLoop()
 
 	StateManager.SwitchStateTo(STATE_OPENED);
 }
+
+
+void saveNewTagStateExit() {}

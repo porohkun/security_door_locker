@@ -11,7 +11,7 @@ void closedState()
 	digitalWrite(LED_04, HIGH);
 	digitalWrite(LED_08, LOW);
 
-	StateManager.StartTimeout(10000);
+	StateManager.StartTimeout(2000);
 }
 
 
@@ -22,3 +22,6 @@ void closedStateLoop()
 	if (StateManager.IsTimeout())
 		StateManager.SwitchStateTo(STATE_LOCKING);
 }
+
+
+void closedStateExit() {}

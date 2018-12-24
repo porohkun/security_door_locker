@@ -20,3 +20,6 @@ void lockingStateLoop()
 	if (Button.GetDown(BTN_LOCKED))
 		StateManager.SwitchStateTo(STATE_LOCKED);
 }
+
+
+void lockingStateExit() {}

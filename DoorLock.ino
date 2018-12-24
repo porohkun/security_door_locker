@@ -5,10 +5,11 @@
 */
 
 //#include <EEPROM.h>
-#include "Toggle.h"
 #include "Button.h"
 #include "Defines.h"
 #include "StateManager.h"
+#include <EEPROM.h>
+#include "Flags.h"
 
 
 void setup()
@@ -21,7 +22,13 @@ void setup()
 
 	Serial.begin(115200);
 
+	for (int i = 0; i < EEPROM.length(); i++) {
+		EEPROM.write(i, 0);
+	}
+
 	StateManager.Init();
+
+	randomSeed(analogRead(7));
 }
 
 void loop()

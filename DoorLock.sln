@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DoorLock", "DoorLock.vcxpro
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConnectApp", "ConnectApp\ConnectApp.csproj", "{52CBCF24-A916-4759-B486-C4CF7DE3B9FB}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rfid-master", "..\libraries\rfid-master\rfid-master.vcxitems", "{7B147480-EE4D-491D-8B4A-2C73BD0488BD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

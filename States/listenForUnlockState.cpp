@@ -1,6 +1,8 @@
 #include "../StateManager.h"
 #include "../Defines.h"
 #include "../Button.h"
+#include "../Tag.h"
+#include "../Logger.h"
 
 
 void listenForUnlockState()
@@ -10,6 +12,8 @@ void listenForUnlockState()
 	digitalWrite(LED_02, LOW);
 	digitalWrite(LED_04, LOW);
 	digitalWrite(LED_08, LOW);
+
+	Tag.ActivateListener();
 }
 
 
@@ -19,10 +23,24 @@ void listenForUnlockStateLoop()
 
 	if (Button.GetUp(BTN_EXTERNAL))
 		StateManager.SwitchStateTo(STATE_LOCKED);
-	//TODO: nfc
-	else if (Button.GetUp(BTN_NFC))
-		StateManager.SwitchStateTo(STATE_UNLOCKING);
-	//TODO: nfc
-	//else if (/*nfc_invalid*/)
-	//	StateManager.SwitchStateTo(STATE_LOCKED);
+	else if (Tag.HaveTag())
+	{
+		if (Tag.CurrentTagIsKnown())
+		{
+			Logger.LogUnlockWithTag(Tag.GetCurrentTag());
+			StateManager.SwitchStateTo(STATE_UNLOCKING);
+		}
+		else
+		{
+			Logger.LogUnlockWrongTag(Tag.GetCurrentTag());
+			StateManager.SwitchStateTo(STATE_LOCKED);
+		}
+		Tag.Stop();
+	}
+}
+
+
+void listenForUnlockStateExit()
+{
+	Tag.DeactivateListener();
 }

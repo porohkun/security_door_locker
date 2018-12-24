@@ -11,7 +11,7 @@ void unlockedState()
 	digitalWrite(LED_04, LOW);
 	digitalWrite(LED_08, LOW);
 
-	StateManager.StartTimeout(10000);
+	StateManager.StartTimeout(5000);
 }
 
 
@@ -24,3 +24,6 @@ void unlockedStateLoop()
 	else if (Button.GetUp(REED_SWITCH))
 		StateManager.SwitchStateTo(STATE_OPENED);
 }
+
+
+void unlockedStateExit() {}
