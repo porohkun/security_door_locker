@@ -15,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using DoorController;
 
 namespace ConnectApp
 {
@@ -63,6 +64,7 @@ namespace ConnectApp
             }
         }
         private string _logString;
+        private Controller _doorController;
 
         public MainWindow()
         {
