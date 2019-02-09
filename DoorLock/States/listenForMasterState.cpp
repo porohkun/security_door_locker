@@ -1,49 +1,63 @@
+#include "ListenForMasterState.h"
 #include "../StateManager.h"
 #include "../Defines.h"
 #include "../Button.h"
+#include "../Sound.h"
 #include "../Tag.h"
 #include "../Logger.h"
 
 
-void listenForMasterState()
+void ListenForMasterState::Init()
 {
 	Serial.println("==+> listen for master");
-	digitalWrite(LED_01, HIGH);
-	digitalWrite(LED_02, HIGH);
-	digitalWrite(LED_04, HIGH);
-	digitalWrite(LED_08, LOW);
-
-	Tag.ActivateListener();
-	StateManager.StartTimeout(10000);
+	StateManager.StartTimeout(1000);
+	_activated = false;
 }
 
-
-void listenForMasterStateLoop()
+void ListenForMasterState::Loop()
 {
-	digitalWrite(LED_16, HIGH);
+	if (!_activated && StateManager.IsTimeout())
+	{
+		_activated = true;
+		Tag.ActivateListener();
+		StateManager.StartTimeout(10000);
+	}
 
-	if (Button.GetDown(REED_SWITCH))
-		StateManager.SwitchStateTo(STATE_CLOSED);
-	else if (StateManager.IsTimeout())
+	if (!Button.GetState(OPENED_STATUS))
+	{
+		Sound.PlayClosed();
+		StateManager.SwitchStateTo(STATE_LOCKED);
+	}
+	else if (_activated && StateManager.IsTimeout())
+	{
+		Sound.PlayError();
 		StateManager.SwitchStateTo(STATE_OPENED);
-	else if (Tag.HaveTag())
+	}
+	else if (_activated && Tag.HaveTag())
 	{
 		if (Tag.HaveMasterTag())
 			if (Tag.CurrentTagIsMaster())
+			{
+				Sound.PlayBeep();
 				StateManager.SwitchStateTo(STATE_LISTEN_FOR_EMPTY);
+			}
 			else
+			{
+				Sound.PlayError();
 				StateManager.SwitchStateTo(STATE_OPENED);
+			}
 		else
 		{
 			Tag.SaveCurrentTagAsMaster();
+			Sound.PlayOK();
 			StateManager.SwitchStateTo(STATE_OPENED);
 		}
 		Tag.Stop();
 	}
 }
 
-
-void listenForMasterStateExit()
+void ListenForMasterState::Exit()
 {
+	Serial.println("<+== listen for master");
 	Tag.DeactivateListener();
 }

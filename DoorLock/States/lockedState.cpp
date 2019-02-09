@@ -1,28 +1,54 @@
+#include "LockedState.h"
 #include "../StateManager.h"
 #include "../Defines.h"
 #include "../Button.h"
+#include "../Sound.h"
+#include "../Tag.h"
+#include "../Logger.h"
 
 
-void lockedState()
+void LockedState::Init()
 {
 	Serial.println("==+> locked");
-	digitalWrite(LED_01, LOW);
-	digitalWrite(LED_02, LOW);
-	digitalWrite(LED_04, LOW);
-	digitalWrite(LED_08, LOW);
+	StateManager.StartTimeout(1000);
+	_activated = false;
 }
 
-void lockedStateLoop()
+void LockedState::Loop()
 {
-	digitalWrite(LED_16, HIGH);
+	if (!_activated && StateManager.IsTimeout())
+	{
+		_activated = true;
+		Tag.ActivateListener();
+	}
 
 	if (Button.GetDown(BTN_INTERNAL))
 		StateManager.SwitchStateTo(STATE_UNLOCKING);
-	else if (Button.GetDown(BTN_EXTERNAL))
-		StateManager.SwitchStateTo(STATE_LISTEN_FOR_UNLOCK);
-	else if (Button.GetUp(BTN_LOCKED))
-		StateManager.SwitchStateTo(STATE_UNLOCKED);
+	else if (Button.GetDown(OPENED_STATUS))
+	{
+		Sound.PlayOpened();
+		StateManager.SwitchStateTo(STATE_OPENED);
+	}
+	else if (_activated && Tag.HaveTag())
+	{
+		if (Tag.CurrentTagIsKnown())
+		{
+			Logger.LogUnlockWithTag(Tag.GetCurrentTag());
+			Sound.PlayOK();
+			StateManager.SwitchStateTo(STATE_UNLOCKING);
+		}
+		else
+		{
+			Logger.LogUnlockWrongTag(Tag.GetCurrentTag());
+			Sound.PlayError();
+			StateManager.SwitchStateTo(STATE_LOCKED);
+		}
+		Tag.Stop();
+	}
 }
 
-
-void lockedStateExit() {}
+void LockedState::Exit()
+{
+	Serial.println("<+== locked");
+	Tag.DeactivateListener();
+}

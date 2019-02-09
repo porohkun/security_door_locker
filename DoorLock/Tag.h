@@ -10,6 +10,9 @@ public:
 	void ActivateListener();
 	void DeactivateListener();
 	bool HaveTag();
+	void DumpToSerial(MFRC522::Uid * uid);
+	void PICC_DumpMifareClassicToSerial(MFRC522::Uid * uid, MFRC522::PICC_Type piccType, MFRC522::MIFARE_Key * key);
+	void PICC_DumpMifareClassicSectorToSerial(MFRC522::Uid * uid, MFRC522::MIFARE_Key * key, byte sector);
 	void FillBuffer(byte *key1, byte *accBits, byte *key2);
 	void PrintBuffer();
 	void PrintBuffer(byte block_);

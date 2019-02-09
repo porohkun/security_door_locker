@@ -8,24 +8,29 @@
 #include "Button.h"
 #include "Defines.h"
 #include "StateManager.h"
+#include "Sound.h"
 #include <EEPROM.h>
 #include "Flags.h"
 
 
 void setup()
 {
-	pinMode(LED_01, OUTPUT);
-	pinMode(LED_02, OUTPUT);
-	pinMode(LED_04, OUTPUT);
-	pinMode(LED_08, OUTPUT);
-	pinMode(LED_16, OUTPUT);
+	pinMode(UNLOCK_SIGNAL, OUTPUT);
+	pinMode(LED_BUTTON, OUTPUT);
 
 	Serial.begin(115200);
+	Serial.println("!!! Started");
 
-	for (int i = 0; i < EEPROM.length(); i++) {
+
+	//digitalWrite(UNLOCK_SIGNAL, HIGH);
+	//digitalWrite(LED_BUTTON, HIGH);
+
+	/*for (int i = 0; i < EEPROM.length(); i++) {
 		EEPROM.write(i, 0);
-	}
+	}*/
 
+	Sound.Initial(BEEEPER);
+	Sound.PlayClosed();
 	StateManager.Init();
 
 	randomSeed(analogRead(7));
@@ -34,5 +39,6 @@ void setup()
 void loop()
 {
 	Button.Loop();
+	Sound.Loop();
 	StateManager.Loop();
 }

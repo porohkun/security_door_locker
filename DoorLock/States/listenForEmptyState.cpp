@@ -1,41 +1,54 @@
+#include "ListenForEmptyState.h"
 #include "../StateManager.h"
 #include "../Defines.h"
 #include "../Button.h"
+#include "../Sound.h"
 #include "../Tag.h"
 #include "../Logger.h"
 
 
-void listenForEmptyState()
+void ListenForEmptyState::Init()
 {
 	Serial.println("==+> listen for empty");
-	digitalWrite(LED_01, LOW);
-	digitalWrite(LED_02, LOW);
-	digitalWrite(LED_04, LOW);
-	digitalWrite(LED_08, HIGH);
-
-	Tag.ActivateListener();
-	StateManager.StartTimeout(10000);
+	StateManager.StartTimeout(1000);
+	_activated = false;
 }
 
-
-void listenForEmptyStateLoop()
+void ListenForEmptyState::Loop()
 {
-	digitalWrite(LED_16, HIGH);
-
-	if (Button.GetDown(REED_SWITCH))
-		StateManager.SwitchStateTo(STATE_CLOSED);
-	else if (StateManager.IsTimeout())
-		StateManager.SwitchStateTo(STATE_OPENED);
-	else if (Tag.HaveTag() && !Tag.CurrentTagIsMaster() && !Tag.CurrentTagIsKnown())
+	if (!_activated && StateManager.IsTimeout())
 	{
-		Tag.SaveCurrentTag();
+		_activated = true;
+		Tag.ActivateListener();
+		StateManager.StartTimeout(10000);
+	}
+
+	if (!Button.GetState(OPENED_STATUS))
+	{
+		Sound.PlayClosed();
+		StateManager.SwitchStateTo(STATE_LOCKED);
+	}
+	else if (_activated && StateManager.IsTimeout())
+	{
+		Sound.PlayError();
+		StateManager.SwitchStateTo(STATE_OPENED);
+	}
+	else if (_activated && Tag.HaveTag())
+	{
+		if (!Tag.CurrentTagIsMaster() && !Tag.CurrentTagIsKnown())
+		{
+			Sound.PlayOK();
+			Tag.SaveCurrentTag();
+		}
+		else
+			Sound.PlayError();
 		StateManager.SwitchStateTo(STATE_OPENED);
 		Tag.Stop();
 	}
 }
 
-
-void listenForEmptyStateExit()
+void ListenForEmptyState::Exit()
 {
+	Serial.println("<+== listen for empty");
 	Tag.DeactivateListener();
 }

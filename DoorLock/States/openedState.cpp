@@ -1,27 +1,34 @@
+#include "OpenedState.h"
 #include "../StateManager.h"
 #include "../Defines.h"
 #include "../Button.h"
+#include "../Sound.h"
 
 
-void openedState()
+void OpenedState::Init()
 {
 	Serial.println("==+> opened");
-	digitalWrite(LED_01, LOW);
-	digitalWrite(LED_02, LOW);
-	digitalWrite(LED_04, HIGH);
-	digitalWrite(LED_08, LOW);
+
+	digitalWrite(LED_BUTTON, HIGH);
 }
 
-
-void openedStateLoop()
+void OpenedState::Loop()
 {
-	digitalWrite(LED_16, HIGH);
-
-	if (Button.GetDown(REED_SWITCH))
-		StateManager.SwitchStateTo(STATE_CLOSED);
-	else if ((Button.GetDown(BTN_INTERNAL) && Button.GetState(BTN_EXTERNAL)) || (Button.GetDown(BTN_EXTERNAL) && Button.GetState(BTN_INTERNAL)))
+	if (!Button.GetState(OPENED_STATUS))
+	{
+		Sound.PlayClosed();
+		StateManager.SwitchStateTo(STATE_LOCKED);
+	}
+	else if (Button.GetDown(BTN_INTERNAL))
+	{
+		Sound.PlayBeep();
 		StateManager.SwitchStateTo(STATE_LISTEN_FOR_MASTER);
+	}
 }
 
+void OpenedState::Exit()
+{
+	Serial.println("<+== opened");
 
-void openedStateExit() {}
+	digitalWrite(LED_BUTTON, LOW);
+}

@@ -1,27 +1,29 @@
+#include "UnlockingState.h"
 #include "../StateManager.h"
 #include "../Defines.h"
 #include "../Button.h"
+#include "../Sound.h"
 
 
-void unlockingState()
+void UnlockingState::Init()
 {
 	Serial.println("==+> unlocking");
-	digitalWrite(LED_01, LOW);
-	digitalWrite(LED_02, HIGH);
-	digitalWrite(LED_04, LOW);
-	digitalWrite(LED_08, LOW);
+
+	digitalWrite(UNLOCK_SIGNAL, HIGH);
+	delay(100);
+	digitalWrite(UNLOCK_SIGNAL, LOW);
 }
 
-
-void unlockingStateLoop()
+void UnlockingState::Loop()
 {
-	digitalWrite(LED_16, HIGH);
-
-	if (Button.GetUp(BTN_LOCKED))
-		StateManager.SwitchStateTo(STATE_UNLOCKED);
-	else if (Button.GetUp(REED_SWITCH))
+	if (Button.GetDown(OPENED_STATUS))
+	{
+		Sound.PlayOpened();
 		StateManager.SwitchStateTo(STATE_OPENED);
+	}
 }
 
-
-void unlockingStateExit() {}
+void UnlockingState::Exit()
+{
+	Serial.println("<+== unlocking");
+}

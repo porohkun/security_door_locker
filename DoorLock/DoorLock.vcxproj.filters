@@ -42,6 +42,27 @@
     <ClInclude Include="Flags.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Sound.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="States\BaseState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="States\LockedState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="States\ListenForEmptyState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="States\ListenForMasterState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="States\OpenedState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="States\UnlockingState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Button.cpp">
@@ -49,36 +70,6 @@
     </ClCompile>
     <ClCompile Include="StateManager.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="States\closedState.cpp">
-      <Filter>States</Filter>
-    </ClCompile>
-    <ClCompile Include="States\listenForEmptyState.cpp">
-      <Filter>States</Filter>
-    </ClCompile>
-    <ClCompile Include="States\listenForMasterState.cpp">
-      <Filter>States</Filter>
-    </ClCompile>
-    <ClCompile Include="States\listenForUnlockState.cpp">
-      <Filter>States</Filter>
-    </ClCompile>
-    <ClCompile Include="States\lockingState.cpp">
-      <Filter>States</Filter>
-    </ClCompile>
-    <ClCompile Include="States\openedState.cpp">
-      <Filter>States</Filter>
-    </ClCompile>
-    <ClCompile Include="States\saveNewTagState.cpp">
-      <Filter>States</Filter>
-    </ClCompile>
-    <ClCompile Include="States\unlockedState.cpp">
-      <Filter>States</Filter>
-    </ClCompile>
-    <ClCompile Include="States\unlockingState.cpp">
-      <Filter>States</Filter>
-    </ClCompile>
-    <ClCompile Include="States\lockedState.cpp">
-      <Filter>States</Filter>
     </ClCompile>
     <ClCompile Include="Tag.cpp">
       <Filter>Source Files</Filter>
@@ -88,6 +79,27 @@
     </ClCompile>
     <ClCompile Include="Flags.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sound.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="States\LockedState.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
+    <ClCompile Include="States\BaseState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="States\ListenForEmptyState.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
+    <ClCompile Include="States\ListenForMasterState.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
+    <ClCompile Include="States\OpenedState.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
+    <ClCompile Include="States\UnlockingState.cpp">
+      <Filter>States</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
