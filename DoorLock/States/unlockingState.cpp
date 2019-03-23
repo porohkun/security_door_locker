@@ -10,7 +10,7 @@ void UnlockingState::Init()
 	Serial.println("==+> unlocking");
 
 	digitalWrite(UNLOCK_SIGNAL, HIGH);
-	delay(100);
+	delay(200);
 	digitalWrite(UNLOCK_SIGNAL, LOW);
 }
 

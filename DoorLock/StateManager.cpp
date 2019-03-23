@@ -5,8 +5,6 @@
 void StateManagerClass::Init()
 {
 	Serial.println("StateManagerClass::Init()");
-	byte buttons[] = { BTN_INTERNAL, OPENED_STATUS, 0xff, 0xff, 0xff };
-	Button.SetButtons(buttons);
 	this->StartState(_currentState);
 }
 

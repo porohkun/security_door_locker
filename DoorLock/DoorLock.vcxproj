@@ -107,6 +107,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Rnd.h" />
     <ClInclude Include="States\ListenForEmptyState.h" />
     <ClInclude Include="States\ListenForMasterState.h" />
     <ClInclude Include="States\OpenedState.h" />
@@ -123,6 +124,7 @@
     <ClInclude Include="__vm\.DoorLock.vsarduino.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Rnd.cpp" />
     <ClCompile Include="States\ListenForEmptyState.cpp" />
     <ClCompile Include="States\ListenForMasterState.cpp" />
     <ClCompile Include="States\OpenedState.cpp" />

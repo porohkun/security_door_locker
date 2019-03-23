@@ -35,7 +35,7 @@ void ListenForEmptyState::Loop()
 	}
 	else if (_activated && Tag.HaveTag())
 	{
-		if (!Tag.CurrentTagIsMaster() && !Tag.CurrentTagIsKnown())
+		if (!Tag.CurrentTagIsMaster(true) && !Tag.CurrentTagIsKnown(true))
 		{
 			Sound.PlayOK();
 			Tag.SaveCurrentTag();
@@ -49,6 +49,6 @@ void ListenForEmptyState::Loop()
 
 void ListenForEmptyState::Exit()
 {
-	Serial.println("<+== listen for empty");
 	Tag.DeactivateListener();
+	Serial.println("<+== listen for empty");
 }

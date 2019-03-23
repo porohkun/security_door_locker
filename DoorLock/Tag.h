@@ -18,27 +18,39 @@ public:
 	void PrintBuffer(byte block_);
 	bool AuthKeyA(MFRC522::MIFARE_Key *key, byte block_, bool silent);
 	bool AuthKeyB(MFRC522::MIFARE_Key *key, byte block_, bool silent);
-	bool ReadBlock(byte block_);
-	bool WriteBlock(byte block_);
+	bool ReadBlockToBuffer(byte block_);
+	bool WriteBlockFromBuffer(byte block_);
 	void Stop();
 
 	bool HaveMasterTag();
-	void SaveCurrentTagAsMaster();
+	bool SaveCurrentTagAsMaster();
 	bool SaveCurrentTag();
-	bool CurrentTagIsMaster();
-	bool CurrentTagIsKnown();
+	bool CurrentTagIsMaster(bool uidOnly);
+	bool CurrentTagIsKnown(bool uidOnly);
 	MFRC522::Uid GetCurrentTag();
+
+	unsigned long WriteSeedSector(byte tagIndex, unsigned long dataSeed);
+
 
 private:
 	void PrintBufferInternal();
 	bool AuthKey(byte command, MFRC522::MIFARE_Key *key, byte block_, bool silent);
-	void SaveCurrentTagAtIndex(byte index);
-	bool CurrentTagIsKnownAsIndex(byte index);
+	bool SaveCurrentTagAtIndex(byte index);
+	bool CurrentTagIsKnownAsIndex(byte index, bool uidOnly);
+	bool WriteSeedSector(byte *__seedPos, unsigned long * __seed);
+	bool ReadSeedSector(byte* __seedPos, unsigned long *__seed, unsigned long *__newSeed);
+	byte GetRandomSeedPositionInSeedSector();
+	void SetMasterKeyAsCurrentKey();
+	bool FillRandomSectorByRandom(unsigned long seed);
+	bool CheckRandomSectorByRandom(unsigned long seed);
+	/*void FillBufferByRandom(byte rndIndex);
+	bool CompareBufferByRandom(byte rndIndex);*/
 	MFRC522::StatusCode status;
-	byte buffer[18];
-	byte byteCount = sizeof(buffer);
-	MFRC522 mfrc522 = MFRC522(SS_PIN, RST_PIN);
-	MFRC522::MIFARE_Key key;
+	byte _buffer[18];
+	byte _byteCount = sizeof(_buffer);
+	byte _masterKey[6] = { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
+	MFRC522 _mfrc522 = MFRC522(SS_PIN, RST_PIN);
+	MFRC522::MIFARE_Key _key;
 };
 
 extern TagClass Tag;

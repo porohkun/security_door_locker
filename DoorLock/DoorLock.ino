@@ -4,14 +4,13 @@
 	Author:     POROH-PC\P
 */
 
-//#include <EEPROM.h>
 #include "Button.h"
 #include "Defines.h"
 #include "StateManager.h"
 #include "Sound.h"
 #include <EEPROM.h>
 #include "Flags.h"
-
+#include "Rnd.h"
 
 void setup()
 {
@@ -21,23 +20,28 @@ void setup()
 	Serial.begin(115200);
 	Serial.println("!!! Started");
 
-
 	//digitalWrite(UNLOCK_SIGNAL, HIGH);
 	//digitalWrite(LED_BUTTON, HIGH);
 
-	/*for (int i = 0; i < EEPROM.length(); i++) {
-		EEPROM.write(i, 0);
-	}*/
+	byte buttons[] = { BTN_INTERNAL, BTN_EXTERNAL, OPENED_STATUS, BTN_CLR_EEPROM, 0xff };
+	Button.SetButtons(buttons);
 
 	Sound.Initial(BEEEPER);
 	Sound.PlayClosed();
 	StateManager.Init();
 
-	randomSeed(analogRead(7));
 }
 
 void loop()
 {
+	if (Button.GetUp(BTN_CLR_EEPROM))
+	{
+		for (int i = 0; i < EEPROM.length(); i++)
+			EEPROM.write(i, 0);
+		Sound.PlayClosed();
+		Serial.println("!!! Clear EEPROM");
+	}
+
 	Button.Loop();
 	Sound.Loop();
 	StateManager.Loop();

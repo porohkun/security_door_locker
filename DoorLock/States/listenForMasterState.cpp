@@ -36,7 +36,7 @@ void ListenForMasterState::Loop()
 	else if (_activated && Tag.HaveTag())
 	{
 		if (Tag.HaveMasterTag())
-			if (Tag.CurrentTagIsMaster())
+			if (Tag.CurrentTagIsMaster(false))
 			{
 				Sound.PlayBeep();
 				StateManager.SwitchStateTo(STATE_LISTEN_FOR_EMPTY);
@@ -48,8 +48,10 @@ void ListenForMasterState::Loop()
 			}
 		else
 		{
-			Tag.SaveCurrentTagAsMaster();
-			Sound.PlayOK();
+			if (Tag.SaveCurrentTagAsMaster())
+				Sound.PlayOK();
+			else
+				Sound.PlayError();
 			StateManager.SwitchStateTo(STATE_OPENED);
 		}
 		Tag.Stop();
@@ -58,6 +60,6 @@ void ListenForMasterState::Loop()
 
 void ListenForMasterState::Exit()
 {
-	Serial.println("<+== listen for master");
 	Tag.DeactivateListener();
+	Serial.println("<+== listen for master");
 }

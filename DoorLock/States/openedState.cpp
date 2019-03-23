@@ -28,7 +28,6 @@ void OpenedState::Loop()
 
 void OpenedState::Exit()
 {
-	Serial.println("<+== opened");
-
 	digitalWrite(LED_BUTTON, LOW);
+	Serial.println("<+== opened");
 }

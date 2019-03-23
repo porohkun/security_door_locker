@@ -31,7 +31,7 @@ void LockedState::Loop()
 	}
 	else if (_activated && Tag.HaveTag())
 	{
-		if (Tag.CurrentTagIsKnown())
+		if (Tag.CurrentTagIsKnown(false))
 		{
 			Logger.LogUnlockWithTag(Tag.GetCurrentTag());
 			Sound.PlayOK();
@@ -49,6 +49,6 @@ void LockedState::Loop()
 
 void LockedState::Exit()
 {
-	Serial.println("<+== locked");
 	Tag.DeactivateListener();
+	Serial.println("<+== locked");
 }

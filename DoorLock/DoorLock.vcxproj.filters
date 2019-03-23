@@ -63,6 +63,9 @@
     <ClInclude Include="States\UnlockingState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Rnd.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Button.cpp">
@@ -100,6 +103,9 @@
     </ClCompile>
     <ClCompile Include="States\UnlockingState.cpp">
       <Filter>States</Filter>
+    </ClCompile>
+    <ClCompile Include="Rnd.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
