@@ -66,6 +66,9 @@
     <ClInclude Include="Rnd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Adafruit_PN532.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Button.cpp">
@@ -105,6 +108,9 @@
       <Filter>States</Filter>
     </ClCompile>
     <ClCompile Include="Rnd.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Adafruit_PN532.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

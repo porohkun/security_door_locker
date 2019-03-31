@@ -7,15 +7,12 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DoorLock", "DoorLock\DoorLo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConnectApp", "ConnectApp\ConnectApp.csproj", "{52CBCF24-A916-4759-B486-C4CF7DE3B9FB}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rfid-master", "..\libraries\rfid-master\rfid-master.vcxitems", "{7B147480-EE4D-491D-8B4A-2C73BD0488BD}"
-EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "DoorController", "DoorController\DoorController.shproj", "{0C34B557-A75D-4ED7-89A8-43DFC6C4A146}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		DoorController\DoorController.projitems*{0c34b557-a75d-4ed7-89a8-43dfc6c4a146}*SharedItemsImports = 13
 		DoorController\DoorController.projitems*{52cbcf24-a916-4759-b486-c4cf7de3b9fb}*SharedItemsImports = 4
-		..\libraries\rfid-master\rfid-master.vcxitems*{7b147480-ee4d-491d-8b4a-2c73bd0488bd}*SharedItemsImports = 9
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
