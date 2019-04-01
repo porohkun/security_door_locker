@@ -1,8 +1,11 @@
 #include "Arduino.h"
-#include <MFRC522.h>
+#include "Defines.h"
+#include <Wire.h>
+#include <SPI.h>
+#include "Adafruit_PN532.h"
 
-#define SS_PIN 10
-#define RST_PIN 9
+#define MIFARE_Key_A 0x0
+#define MIFARE_Key_B 0x1
 
 class TagClass
 {
@@ -10,14 +13,11 @@ public:
 	void ActivateListener();
 	void DeactivateListener();
 	bool HaveTag();
-	void DumpToSerial(MFRC522::Uid * uid);
-	void PICC_DumpMifareClassicToSerial(MFRC522::Uid * uid, MFRC522::PICC_Type piccType, MFRC522::MIFARE_Key * key);
-	void PICC_DumpMifareClassicSectorToSerial(MFRC522::Uid * uid, MFRC522::MIFARE_Key * key, byte sector);
 	void FillBuffer(byte *key1, byte *accBits, byte *key2);
 	void PrintBuffer();
 	void PrintBuffer(byte block_);
-	bool AuthKeyA(MFRC522::MIFARE_Key *key, byte block_, bool silent);
-	bool AuthKeyB(MFRC522::MIFARE_Key *key, byte block_, bool silent);
+	bool AuthKeyA(byte block_, bool silent);
+	bool AuthKeyB(byte block_, bool silent);
 	bool ReadBlockToBuffer(byte block_);
 	bool WriteBlockFromBuffer(byte block_);
 	void Stop();
@@ -27,14 +27,14 @@ public:
 	bool SaveCurrentTag();
 	bool CurrentTagIsMaster(bool uidOnly);
 	bool CurrentTagIsKnown(bool uidOnly);
-	MFRC522::Uid GetCurrentTag();
+	byte * GetCurrentTag();
 
 	unsigned long WriteSeedSector(byte tagIndex, unsigned long dataSeed);
 
 
 private:
 	void PrintBufferInternal();
-	bool AuthKey(byte command, MFRC522::MIFARE_Key *key, byte block_, bool silent);
+	bool AuthKey(byte command, byte block_, bool silent);
 	bool SaveCurrentTagAtIndex(byte index);
 	bool CurrentTagIsKnownAsIndex(byte index, bool uidOnly);
 	bool WriteSeedSector(byte *__seedPos, unsigned long * __seed);
@@ -45,12 +45,14 @@ private:
 	bool CheckRandomSectorByRandom(unsigned long seed);
 	/*void FillBufferByRandom(byte rndIndex);
 	bool CompareBufferByRandom(byte rndIndex);*/
-	MFRC522::StatusCode status;
-	byte _buffer[18];
+	byte _status;
+	byte _buffer[16];
 	byte _byteCount = sizeof(_buffer);
 	byte _masterKey[6] = { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
-	MFRC522 _mfrc522 = MFRC522(SS_PIN, RST_PIN);
-	MFRC522::MIFARE_Key _key;
+	byte _key[6] = { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
+	Adafruit_PN532 _pn532 = Adafruit_PN532(PN532_SCK, PN532_MISO, PN532_MOSI, PN532_SS);
+	byte _uid[7] = { 0, 0, 0, 0, 0, 0, 0 };
+	byte _uidLength;
 };
 
 extern TagClass Tag;

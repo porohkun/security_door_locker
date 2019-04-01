@@ -1,18 +1,17 @@
 #include "Arduino.h"
 #include "Logger.h"
-#include <MFRC522.h>
 
 void LoggerClass::ActivateLogger()
 {
 	Serial.println("!!! Activate Logger");
 }
 
-void LoggerClass::LogUnlockWithTag(MFRC522::Uid uid)
+void LoggerClass::LogUnlockWithTag(byte * uid)
 {
 	Serial.println("!!! Unlock With Tag");
 }
 
-void LoggerClass::LogUnlockWrongTag(MFRC522::Uid uid)
+void LoggerClass::LogUnlockWrongTag(byte * uid)
 {
 	Serial.println("!!! Unlock Wrong Tag");
 }

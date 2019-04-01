@@ -6,6 +6,11 @@
 #define BEEEPER        0x07
 #define BTN_CLR_EEPROM 0x08
 
+#define PN532_SCK  0x09
+#define PN532_MISO 0x0A
+#define PN532_MOSI 0x0B
+#define PN532_SS   0x0C
+
 #define BIT_00 0x01
 #define BIT_01 0x02
 #define BIT_02 0x04
