@@ -9,7 +9,6 @@
 
 void LockedState::Init()
 {
-	Serial.println("==+> locked");
 	StateManager.StartTimeout(1000);
 	_activated = false;
 }
@@ -50,5 +49,4 @@ void LockedState::Loop()
 void LockedState::Exit()
 {
 	Tag.DeactivateListener();
-	Serial.println("<+== locked");
 }

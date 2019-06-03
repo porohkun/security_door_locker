@@ -11,6 +11,7 @@
 #include <EEPROM.h>
 #include "Flags.h"
 #include "Rnd.h"
+#include "Logger.h"
 
 void setup()
 {
@@ -18,7 +19,7 @@ void setup()
 	pinMode(LED_BUTTON, OUTPUT);
 
 	Serial.begin(115200);
-	Serial.println("!!! Started");
+	Logger.TextMessage(MESSAGE_LEVEL_DEBUG, "!!! Started");
 
 	//digitalWrite(UNLOCK_SIGNAL, HIGH);
 	//digitalWrite(LED_BUTTON, HIGH);
@@ -39,7 +40,7 @@ void loop()
 		for (int i = 0; i < EEPROM.length(); i++)
 			EEPROM.write(i, 0);
 		Sound.PlayClosed();
-		Serial.println("!!! Clear EEPROM");
+		Logger.TextMessage(MESSAGE_LEVEL_DEBUG, "!!! Clear EEPROM");
 	}
 
 	Button.Loop();

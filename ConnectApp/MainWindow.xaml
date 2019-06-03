@@ -4,42 +4,61 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ConnectApp"
+        xmlns:dc="clr-namespace:DoorController"
         mc:Ignorable="d"
+        Style="{StaticResource BaseWindowStyle}"
+        d:DataContext="{StaticResource MainWindowExample}"
         Title="MainWindow" Height="450" Width="600">
     <Window.Resources>
-        <Style x:Key="ConsoleTextBox" TargetType="{x:Type TextBox}">
-            <Setter Property="IsReadOnly" Value="True"/>
-            <Setter Property="AcceptsReturn" Value="True"/>
-            <Setter Property="Background" Value="Black"/>
-            <Setter Property="Foreground" Value="Wheat"/>
-            <Setter Property="FontFamily" Value="Courier New"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="TextBox">
-                        <ScrollViewer RenderTransformOrigin="0.5,0.5" VerticalScrollBarVisibility="Auto">
-                            <ScrollViewer.RenderTransform>
-                                <TransformGroup>
-                                    <RotateTransform Angle="180"/>
-                                    <ScaleTransform ScaleX="-1"/>
-                                </TransformGroup>
-                            </ScrollViewer.RenderTransform>
-                            <TextBox
-                                Text="{TemplateBinding Text}"
-                                IsReadOnly="{TemplateBinding IsReadOnly}"
-                                AcceptsReturn="{TemplateBinding AcceptsReturn}"
-                                Background="{TemplateBinding Background}"
-                                Foreground="{TemplateBinding Foreground}"
-                                FontFamily="{TemplateBinding FontFamily}"
-                                RenderTransformOrigin="0.5,0.5">
-                                <TextBox.RenderTransform>
-                                    <ScaleTransform ScaleY="-1"/>
-                                </TextBox.RenderTransform>
-                            </TextBox>
-                        </ScrollViewer>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
+        <ControlTemplate x:Key="ShortMessageTemplate" TargetType="dc:MessageControl">
+            <DockPanel Margin="5,2,5,2">
+                <TextBlock DockPanel.Dock="Left" Width="125"
+                           Foreground="White"
+                           Text="{Binding Time, StringFormat=dd.MM.yy HH:mm:ss.ms}"/>
+                <DockPanel DockPanel.Dock="Top">
+                    <CheckBox DockPanel.Dock="Left" x:Name="expandCb"/>
+                    <TextBox DockPanel.Dock="Left" x:Name="ShortTextComponent"
+                             Text="{Binding ShortText, Mode=OneWay}"
+                             Background="{x:Null}"
+                             BorderThickness="0"/>
+                </DockPanel>
+                <TextBox DockPanel.Dock="Top"
+                         Text="{Binding Mode=OneWay}"
+                         Background="{x:Null}"
+                         BorderThickness="0"/>
+                <TextBox DockPanel.Dock="Top"
+                         Text="{Binding InnerText, Mode=OneWay}"
+                         Background="{x:Null}"
+                         BorderThickness="0"
+                         Visibility="{Binding ElementName=expandCb, Path=IsChecked, Converter={StaticResource BoolToVis}}"/>
+            </DockPanel>
+            <ControlTemplate.Triggers>
+                <Trigger Property="Level" Value="Unknown">
+                    <Setter TargetName="ShortTextComponent" Property="Foreground"
+                            Value="{StaticResource ResourceKey=MessageLevel_Unknown_Brush}"/>
+                </Trigger>
+                <Trigger Property="Level" Value="Debug">
+                    <Setter TargetName="ShortTextComponent" Property="Foreground"
+                            Value="{StaticResource ResourceKey=MessageLevel_Debug_Brush}"/>
+                </Trigger>
+                <Trigger Property="Level" Value="Info">
+                    <Setter TargetName="ShortTextComponent" Property="Foreground"
+                            Value="{StaticResource ResourceKey=MessageLevel_Info_Brush}"/>
+                </Trigger>
+                <Trigger Property="Level" Value="Warning">
+                    <Setter TargetName="ShortTextComponent" Property="Foreground"
+                            Value="{StaticResource ResourceKey=MessageLevel_Warning_Brush}"/>
+                </Trigger>
+                <Trigger Property="Level" Value="Error">
+                    <Setter TargetName="ShortTextComponent" Property="Foreground"
+                            Value="{StaticResource ResourceKey=MessageLevel_Error_Brush}"/>
+                </Trigger>
+                <Trigger Property="Level" Value="Special">
+                    <Setter TargetName="ShortTextComponent" Property="Foreground"
+                            Value="{StaticResource ResourceKey=MessageLevel_Special_Brush}"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -59,13 +78,21 @@
             <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
         <TextBlock Grid.Column="1" Grid.Row="1" Text="Port:" Margin="0,0,4,0" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-        <ComboBox Grid.Column="2" Grid.Row="1" ItemsSource="{Binding PortsList}" SelectedItem="{Binding SelectedPort}"/>
+        <ComboBox Grid.Column="2" Grid.Row="1" ItemsSource="{Binding PortsList}" SelectedItem="{Binding DoorController.PortName}"/>
         <DockPanel Grid.Column="3" Grid.Row="1">
-            <Button DockPanel.Dock="Right" Width="80" Content="Disconnect" IsEnabled="{Binding IsConnected}" Click="DisconnectButton_Click"/>
-            <Button DockPanel.Dock="Right" Width="80" Content="Connect" IsEnabled="{Binding IsDisconnected}" Click="ConnectButton_Click"/>
-            <TextBlock DockPanel.Dock="Right" Text="{Binding ConnectStatus}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Button DockPanel.Dock="Right" Width="80" Content="Disconnect" IsEnabled="{Binding DoorController.Connected}" Click="DisconnectButton_Click"/>
+            <Button DockPanel.Dock="Right" Width="80" Content="Connect" IsEnabled="{Binding DoorController.Connected, Converter={StaticResource ReverseBool}}" Click="ConnectButton_Click"/>
+            <TextBlock DockPanel.Dock="Right" Text="{Binding DoorController.Connected}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </DockPanel>
-        <TextBox Grid.Column="1" Grid.ColumnSpan="6" Grid.Row="3" Style="{StaticResource ConsoleTextBox}" Text="{Binding LogString, Mode=OneWay}"/>
+        <ScrollViewer Grid.Column="1" Grid.ColumnSpan="6" Grid.Row="3">
+            <ItemsControl ItemsSource="{Binding Messages}" Background="{StaticResource BgrDarkBrush}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <dc:MessageControl Message="{Binding}" Template="{StaticResource ShortMessageTemplate}"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
         <DockPanel Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="5">
             <Button DockPanel.Dock="Left" Width="80" Content="Clear" Click="ClearButton_Click"/>
             <TextBlock/>

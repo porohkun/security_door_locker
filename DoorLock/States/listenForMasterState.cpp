@@ -9,7 +9,6 @@
 
 void ListenForMasterState::Init()
 {
-	Serial.println("==+> listen for master");
 	StateManager.StartTimeout(1000);
 	_activated = false;
 }
@@ -61,5 +60,4 @@ void ListenForMasterState::Loop()
 void ListenForMasterState::Exit()
 {
 	Tag.DeactivateListener();
-	Serial.println("<+== listen for master");
 }

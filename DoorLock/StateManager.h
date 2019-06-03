@@ -20,9 +20,10 @@ private:
 	void StopState();
 	void StartState(byte state);
 
-	BaseState* _states[5] = {/*nullptr, nullptr, nullptr, nullptr, nullptr };//*/ new LockedState(), new UnlockingState(), new OpenedState(), new ListenForMasterState(), new ListenForEmptyState()};
+	BaseState* _states[5] = {new LockedState(), new UnlockingState(), new OpenedState(), new ListenForMasterState(), new ListenForEmptyState()};
 	byte _statesCount = 5;
 	byte _currentState;
+	bool _isWrongState;
 	unsigned long _timeout;
 	bool _isTimeouting;
 	bool _isTimeout;

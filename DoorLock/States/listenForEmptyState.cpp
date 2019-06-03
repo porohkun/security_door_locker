@@ -9,7 +9,6 @@
 
 void ListenForEmptyState::Init()
 {
-	Serial.println("==+> listen for empty");
 	StateManager.StartTimeout(1000);
 	_activated = false;
 }
@@ -50,5 +49,4 @@ void ListenForEmptyState::Loop()
 void ListenForEmptyState::Exit()
 {
 	Tag.DeactivateListener();
-	Serial.println("<+== listen for empty");
 }

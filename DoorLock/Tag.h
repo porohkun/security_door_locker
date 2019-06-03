@@ -14,8 +14,8 @@ public:
 	void DeactivateListener();
 	bool HaveTag();
 	void FillBuffer(byte *key1, byte *accBits, byte *key2);
-	void PrintBuffer();
-	void PrintBuffer(byte block_);
+	//void PrintBuffer();
+	//void PrintBuffer(byte block_);
 	bool AuthKeyA(byte block_, bool silent);
 	bool AuthKeyB(byte block_, bool silent);
 	bool ReadBlockToBuffer(byte block_);

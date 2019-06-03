@@ -7,8 +7,6 @@
 
 void UnlockingState::Init()
 {
-	Serial.println("==+> unlocking");
-
 	digitalWrite(UNLOCK_SIGNAL, HIGH);
 	delay(200);
 	digitalWrite(UNLOCK_SIGNAL, LOW);
@@ -23,7 +21,4 @@ void UnlockingState::Loop()
 	}
 }
 
-void UnlockingState::Exit()
-{
-	Serial.println("<+== unlocking");
-}
+void UnlockingState::Exit() {}

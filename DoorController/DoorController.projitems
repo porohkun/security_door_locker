@@ -10,5 +10,19 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Controller.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MessageControl.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messages\LogBlockMessage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messages\ExitStateMessage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messages\AuthBlockMessage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messages\StateChangedMessage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messages\TextMessage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messages\MessageLevel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messages\StreamMessage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messages\DisconnectedMessage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messages\ConnectedMessage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messages\SystemMessage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messages\IMessage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messages\InitStateMessage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)StartByteAttribute.cs" />
   </ItemGroup>
 </Project>

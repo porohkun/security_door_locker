@@ -242,20 +242,20 @@ void Adafruit_PN532::begin() {
 /**************************************************************************/
 void Adafruit_PN532::PrintHex(const byte * data, const uint32_t numBytes)
 {
-	uint32_t szPos;
-	for (szPos = 0; szPos < numBytes; szPos++)
-	{
-		PN532DEBUGPRINT.print(F("0x"));
-		// Append leading 0 for small values
-		if (data[szPos] <= 0xF)
-			PN532DEBUGPRINT.print(F("0"));
-		PN532DEBUGPRINT.print(data[szPos] & 0xff, HEX);
-		if ((numBytes > 1) && (szPos != numBytes - 1))
-		{
-			PN532DEBUGPRINT.print(F(" "));
-		}
-	}
-	PN532DEBUGPRINT.println();
+	//uint32_t szPos;
+	//for (szPos = 0; szPos < numBytes; szPos++)
+	//{
+	//	PN532DEBUGPRINT.print(F("0x"));
+	//	// Append leading 0 for small values
+	//	if (data[szPos] <= 0xF)
+	//		PN532DEBUGPRINT.print(F("0"));
+	//	PN532DEBUGPRINT.print(data[szPos] & 0xff, HEX);
+	//	if ((numBytes > 1) && (szPos != numBytes - 1))
+	//	{
+	//		PN532DEBUGPRINT.print(F(" "));
+	//	}
+	//}
+	//PN532DEBUGPRINT.println();
 }
 
 /**************************************************************************/
@@ -271,27 +271,27 @@ void Adafruit_PN532::PrintHex(const byte * data, const uint32_t numBytes)
 /**************************************************************************/
 void Adafruit_PN532::PrintHexChar(const byte * data, const uint32_t numBytes)
 {
-	uint32_t szPos;
-	for (szPos = 0; szPos < numBytes; szPos++)
-	{
-		// Append leading 0 for small values
-		if (data[szPos] <= 0xF)
-			PN532DEBUGPRINT.print(F("0"));
-		PN532DEBUGPRINT.print(data[szPos], HEX);
-		if ((numBytes > 1) && (szPos != numBytes - 1))
-		{
-			PN532DEBUGPRINT.print(F(" "));
-		}
-	}
-	PN532DEBUGPRINT.print(F("  "));
-	for (szPos = 0; szPos < numBytes; szPos++)
-	{
-		if (data[szPos] <= 0x1F)
-			PN532DEBUGPRINT.print(F("."));
-		else
-			PN532DEBUGPRINT.print((char)data[szPos]);
-	}
-	PN532DEBUGPRINT.println();
+	//uint32_t szPos;
+	//for (szPos = 0; szPos < numBytes; szPos++)
+	//{
+	//	// Append leading 0 for small values
+	//	if (data[szPos] <= 0xF)
+	//		PN532DEBUGPRINT.print(F("0"));
+	//	PN532DEBUGPRINT.print(data[szPos], HEX);
+	//	if ((numBytes > 1) && (szPos != numBytes - 1))
+	//	{
+	//		PN532DEBUGPRINT.print(F(" "));
+	//	}
+	//}
+	//PN532DEBUGPRINT.print(F("  "));
+	//for (szPos = 0; szPos < numBytes; szPos++)
+	//{
+	//	if (data[szPos] <= 0x1F)
+	//		PN532DEBUGPRINT.print(F("."));
+	//	else
+	//		PN532DEBUGPRINT.print((char)data[szPos]);
+	//}
+	//PN532DEBUGPRINT.println();
 }
 
 /**************************************************************************/
@@ -708,13 +708,13 @@ bool Adafruit_PN532::inDataExchange(uint8_t * send, uint8_t sendLength, uint8_t 
 			return true;
 		}
 		else {
-			PN532DEBUGPRINT.print(F("Don't know how to handle this command: "));
-			PN532DEBUGPRINT.println(pn532_packetbuffer[6], HEX);
+		/*	PN532DEBUGPRINT.print(F("Don't know how to handle this command: "));
+			PN532DEBUGPRINT.println(pn532_packetbuffer[6], HEX);*/
 			return false;
 		}
 	}
 	else {
-		PN532DEBUGPRINT.println(F("Preamble missing"));
+		//PN532DEBUGPRINT.println(F("Preamble missing"));
 		return false;
 	}
 }
@@ -762,14 +762,14 @@ bool Adafruit_PN532::inListPassiveTarget() {
 #ifdef PN532DEBUG
 				PN532DEBUGPRINT.println(F("Unhandled number of targets inlisted"));
 #endif
-				PN532DEBUGPRINT.println(F("Number of tags inlisted:"));
-				PN532DEBUGPRINT.println(pn532_packetbuffer[7]);
+				//PN532DEBUGPRINT.println(F("Number of tags inlisted:"));
+				//PN532DEBUGPRINT.println(pn532_packetbuffer[7]);
 				return false;
 			}
 
 			_inListedTag = pn532_packetbuffer[8];
-			PN532DEBUGPRINT.print(F("Tag number: "));
-			PN532DEBUGPRINT.println(_inListedTag);
+			//PN532DEBUGPRINT.print(F("Tag number: "));
+			//PN532DEBUGPRINT.println(_inListedTag);
 
 			return true;
 		}
@@ -1550,7 +1550,7 @@ bool Adafruit_PN532::waitready(uint16_t timeout) {
 		if (timeout != 0) {
 			timer += 10;
 			if (timer > timeout) {
-				PN532DEBUGPRINT.println("TIMEOUT!");
+				//PN532DEBUGPRINT.println("TIMEOUT!");
 				return false;
 			}
 		}
@@ -1674,7 +1674,7 @@ uint8_t Adafruit_PN532::getDataTarget(uint8_t* cmd, uint8_t *cmdlen) {
 	uint8_t length;
 	pn532_packetbuffer[0] = 0x86;
 	if (!sendCommandCheckAck(pn532_packetbuffer, 1, 1000)) {
-		PN532DEBUGPRINT.println(F("Error en ack"));
+		//PN532DEBUGPRINT.println(F("Error en ack"));
 		return false;
 	}
 
