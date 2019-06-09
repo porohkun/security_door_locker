@@ -28,6 +28,7 @@ public:
 	bool CurrentTagIsMaster(bool uidOnly);
 	bool CurrentTagIsKnown(bool uidOnly);
 	byte * GetCurrentTag();
+	byte GetCurrentTagLength();
 
 	unsigned long WriteSeedSector(byte tagIndex, unsigned long dataSeed);
 

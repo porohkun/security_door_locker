@@ -9,10 +9,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConnectApp", "ConnectApp\Co
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "DoorController", "DoorController\DoorController.shproj", "{0C34B557-A75D-4ED7-89A8-43DFC6C4A146}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "WPF.MyFlatTheme", "WPF.MyFlatTheme\WPF.MyFlatTheme.shproj", "{5F01B0C2-39D0-4388-A06A-F595EB7011B4}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		DoorController\DoorController.projitems*{0c34b557-a75d-4ed7-89a8-43dfc6c4a146}*SharedItemsImports = 13
 		DoorController\DoorController.projitems*{52cbcf24-a916-4759-b486-c4cf7de3b9fb}*SharedItemsImports = 4
+		WPF.MyFlatTheme\WPF.MyFlatTheme.projitems*{52cbcf24-a916-4759-b486-c4cf7de3b9fb}*SharedItemsImports = 4
+		WPF.MyFlatTheme\WPF.MyFlatTheme.projitems*{5f01b0c2-39d0-4388-a06a-f595eb7011b4}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

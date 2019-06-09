@@ -18,7 +18,7 @@ void TagClass::ActivateListener()
 
 	uint32_t versiondata = _pn532.getFirmwareVersion();
 	if (!versiondata) {
-		Logger.TextMessage(MESSAGE_LEVEL_DEBUG, "Didn't find PN53x board");
+		Logger.TextMessage(MESSAGE_LEVEL_ERROR, "Didn't find PN53x board");
 		//while (true); // halt
 	}
 	Logger.TextMessage(MESSAGE_LEVEL_DEBUG, "Found chip PN5");
@@ -49,38 +49,6 @@ void TagClass::FillBuffer(byte *key1, byte *accBits, byte *key2)
 		_buffer[i + 10] = key2[i];
 }
 
-//void TagClass::PrintBuffer()
-//{
-//	Serial.print("    Buffer:  ");
-//	PrintBufferInternal();
-//}
-//
-//void TagClass::PrintBuffer(byte block_)
-//{
-//	if (block_ < 10)
-//		Serial.print("         ");
-//	else
-//		Serial.print("        ");
-//	Serial.print(block_);
-//	Serial.print(":  ");
-//	PrintBufferInternal();
-//}
-//
-//void TagClass::PrintBufferInternal()
-//{
-//	for (byte index = 0; index < 16; index++) {
-//		if (_buffer[index] < 0x10)
-//			Serial.print(F(" 0"));
-//		else
-//			Serial.print(F(" "));
-//		Serial.print(_buffer[index], HEX);
-//		if ((index % 4) == 3) {
-//			Serial.print(F(" "));
-//		}
-//	}
-//	Serial.println();
-//}
-
 bool TagClass::AuthKeyA(byte block_, bool silent)
 {
 	return AuthKey(MIFARE_Key_A, block_, silent);
@@ -93,71 +61,23 @@ bool TagClass::AuthKeyB(byte block_, bool silent)
 
 bool TagClass::AuthKey(byte keyid, byte block_, bool silent)
 {
-	//if (!silent)
-	//{
-	//	switch (keyid)
-	//	{
-	//	case MIFARE_Key_A:
-	//		Serial.print("> Auth key A: ");
-	//		break;
-	//	case MIFARE_Key_B:
-	//		Serial.print("> Auth key B: ");
-	//		break;
-	//	default:
-	//		return false;
-	//	}
-	//	Serial.print(block_);
-	//	Serial.print(": ");
-	//	for (byte i = 0; i < 6; i++) {
-	//		if (_key[i] < 0x10)
-	//			Serial.print(F(" 0"));
-	//		else
-	//			Serial.print(F(" "));
-	//		Serial.print(_key[i], HEX);
-	//	}
-	//}
-
 	_status = _pn532.mifareclassic_AuthenticateBlock(_uid, _uidLength, block_, keyid, _key);
 	if (!silent)
 		Logger.AuthBlockMessage(_uid, _uidLength, block_, keyid, _key, 6, _status);
-	/*if (!_status) {
-		Serial.print("  failed.");
-		return false;
-	}
-	if (!silent)
-		Serial.println("  done.");*/
 	return _status;
 }
 
 bool TagClass::ReadBlockToBuffer(byte block_)
 {
-	//Serial.print("> Reading block ");
-	//Serial.print(block_);
-
 	_status = _pn532.mifareclassic_ReadDataBlock(block_, _buffer);
 	Logger.LogBlockMessage(block_, "read", _buffer, _status);
-	//if (!_status) {
-	//	Serial.print("  failed.");
-	//	return false;
-	//}
-	//Serial.println("  done.");
-	//return true;
 	return _status;
 }
 
 bool TagClass::WriteBlockFromBuffer(byte block_)
 {
-	//Serial.print("> Writing block ");
-	//Serial.print(block_);
-
 	_status = _pn532.mifareclassic_WriteDataBlock(block_, _buffer);
 	Logger.LogBlockMessage(block_, "write", _buffer, _status);
-	//if (!_status) {
-	//	Serial.print("  failed.");
-	//	return false;
-	//}
-	//Serial.println("  done.");
-	//return true;
 	return _status;
 }
 
@@ -170,31 +90,22 @@ void TagClass::Stop()
 bool TagClass::HaveMasterTag()
 {
 	bool have = HaveFlag(EEPROM.read(ADDR_TAG_EXISTS), BIT_00);
-	Logger.TextMessage(MESSAGE_LEVEL_SPECIAL, (have ? "> Have master tag: true." : "> Have master tag: false."));
+	Logger.TextMessage(MESSAGE_LEVEL_DEBUG, (have ? "> Have master tag: true." : "> Have master tag: false."));
 	return have;
 }
 
 bool TagClass::SaveCurrentTagAsMaster()
 {
-	if (SaveCurrentTagAtIndex(0))
-	{
-		Logger.TextMessage(MESSAGE_LEVEL_SPECIAL, "> Saved current tag as master.");
-		return true;
-	}
-	return false;
+	return SaveCurrentTagAtIndex(0);
 }
 
 bool TagClass::SaveCurrentTag()
 {
-	Logger.TextMessage(MESSAGE_LEVEL_DEBUG, "> Saving current tag ... ");
 	byte tags = EEPROM.read(ADDR_TAG_EXISTS);
 	for (byte i = 1; i < 8; i++)
 		if (!HaveFlag(tags, 1 << i))
-		{
-			Logger.TextMessage(MESSAGE_LEVEL_DEBUG, "at index " + i);
 			return SaveCurrentTagAtIndex(i);
-		}
-	Logger.TextMessage(MESSAGE_LEVEL_DEBUG, "failed.");
+	Logger.TagSavedMessage(_uid, _uidLength, -1, _status);
 	return false;
 }
 
@@ -205,7 +116,10 @@ bool TagClass::SaveCurrentTagAtIndex(byte index)
 	if (WriteSeedSector(&seedPos, &seed))
 	{
 		if (!FillRandomSectorByRandom(seed))
+		{
+			Logger.TagSavedMessage(_uid, _uidLength, index, false);
 			return false;
+		}
 
 		EEPROM.write(ADDR_SEED_BEGIN + SEED_EEPROM_SIZE * index, seedPos);
 		for (byte i = 0; i < 10; i++)
@@ -214,43 +128,38 @@ bool TagClass::SaveCurrentTagAtIndex(byte index)
 			EEPROM.write(ADDR_TAG_EXISTS, BIT_00);
 		else
 			EEPROM.write(ADDR_TAG_EXISTS, AddFlag(EEPROM.read(ADDR_TAG_EXISTS), 1 << index));
-		Logger.TextMessage(MESSAGE_LEVEL_DEBUG, "> Saved current tag at index " + index);
+		Logger.TagSavedMessage(_uid, _uidLength, index, true);
 		return true;
 	}
+	Logger.TagSavedMessage(_uid, _uidLength, index, false);
 	return false;
 }
 
 bool TagClass::CurrentTagIsMaster(bool uidOnly)
 {
-	bool master = CurrentTagIsKnownAsIndex(0, uidOnly);
-	Logger.TextMessage(MESSAGE_LEVEL_DEBUG, (master ? "> Current tag is master: true." : "> Current tag is master: false."));
-	return master;
+	_status = CurrentTagIsKnownAsIndex(0, uidOnly);
+	Logger.TagAuthMessage(_uid, _uidLength, 0, uidOnly, _status);
+	return _status;
 }
 
 bool TagClass::CurrentTagIsKnown(bool uidOnly)
 {
-	Logger.TextMessage(MESSAGE_LEVEL_DEBUG, "> Current tag is known?");
 	byte tags = EEPROM.read(ADDR_TAG_EXISTS);
 	for (int i = 1; i < 8; i++)
 		if (HaveFlag(tags, 1 << i) && CurrentTagIsKnownAsIndex(i, uidOnly))
 		{
-			Logger.TextMessage(MESSAGE_LEVEL_DEBUG, "> Current tag is known: true.");
+			Logger.TagAuthMessage(_uid, _uidLength, i, uidOnly, true);
 			return true;
 		}
-	Logger.TextMessage(MESSAGE_LEVEL_DEBUG, "> Current tag is known: false.");
+	Logger.TagAuthMessage(_uid, _uidLength, -1, uidOnly, false);
 	return false;
 }
 
 bool TagClass::CurrentTagIsKnownAsIndex(byte index, bool uidOnly)
 {
-	Logger.TextMessage(MESSAGE_LEVEL_DEBUG, "> Current tag is known as index: " + index);
 	for (int i = 0; i < 10; i++)
 		if (EEPROM.read(ADDR_TAGS_BEGIN + TAG_EEPROM_SIZE * index + i) != (i < _uidLength ? _uid[i] : 0))
-		{
-			Logger.TextMessage(MESSAGE_LEVEL_DEBUG, " : false.");
 			return false;
-		}
-	Logger.TextMessage(MESSAGE_LEVEL_DEBUG, " : true.");
 
 	if (uidOnly)
 		return true;
@@ -271,6 +180,11 @@ bool TagClass::CurrentTagIsKnownAsIndex(byte index, bool uidOnly)
 byte * TagClass::GetCurrentTag()
 {
 	return _uid;
+}
+
+byte TagClass::GetCurrentTagLength()
+{
+	return _uidLength;
 }
 
 bool TagClass::WriteSeedSector(byte *__seedPos, unsigned long *__seed)
@@ -365,7 +279,6 @@ bool TagClass::FillRandomSectorByRandom(unsigned long seed)
 			_buffer[i] = data >> 8;
 			_buffer[i + 1] = data;
 		}
-		//PrintBuffer(block);
 		Logger.LogBlockMessage(block, "fill_rnd", _buffer, 1);
 		if (!AuthKeyB(block, false) ||
 			!WriteBlockFromBuffer(block))
@@ -384,24 +297,11 @@ bool TagClass::CheckRandomSectorByRandom(unsigned long seed)
 		if (!AuthKeyB(block, false) ||
 			!ReadBlockToBuffer(block))
 			return false;
-		//PrintBuffer(block);
 		for (byte i = 0; _status != 0 && i < 16; i += 2)
 		{
 			int data = Rnd.Next(0);
 			byte d1 = data >> 8;
 			byte d2 = data - (d1 << 8);
-
-			//if (d1 < 0x10)
-			//	Serial.print(F(" 0"));
-			//else
-			//	Serial.print(F(" "));
-			//Serial.print(d1, HEX);
-
-			//if (d2 < 0x10)
-			//	Serial.print(F(" 0"));
-			//else
-			//	Serial.print(F(" "));
-			//Serial.print(d2, HEX);
 
 			if (_buffer[i] != d1 || _buffer[i + 1] != d2)
 				_status = 0;

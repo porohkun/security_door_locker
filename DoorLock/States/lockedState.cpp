@@ -25,6 +25,7 @@ void LockedState::Loop()
 		StateManager.SwitchStateTo(STATE_UNLOCKING);
 	else if (Button.GetDown(OPENED_STATUS))
 	{
+		Logger.UnlockedWithoutTag();
 		Sound.PlayOpened();
 		StateManager.SwitchStateTo(STATE_OPENED);
 	}
@@ -32,13 +33,13 @@ void LockedState::Loop()
 	{
 		if (Tag.CurrentTagIsKnown(false))
 		{
-			Logger.LogUnlockWithTag(Tag.GetCurrentTag());
+			Logger.UnlockedWithTag(Tag.GetCurrentTag(), Tag.GetCurrentTagLength(), true);
 			Sound.PlayOK();
 			StateManager.SwitchStateTo(STATE_UNLOCKING);
 		}
 		else
 		{
-			Logger.LogUnlockWrongTag(Tag.GetCurrentTag());
+			Logger.UnlockedWithTag(Tag.GetCurrentTag(), Tag.GetCurrentTagLength(), false);
 			Sound.PlayError();
 			StateManager.SwitchStateTo(STATE_LOCKED);
 		}

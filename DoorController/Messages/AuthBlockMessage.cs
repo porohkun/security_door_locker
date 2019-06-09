@@ -5,7 +5,7 @@
         KeyA = 0,
         KeyB = 1
     }
-    [StartByte(4)]
+    [StartByte(0x04)]
     public class AuthBlockMessage : StreamMessage
     {
         public byte[] TagUID { get; private set; }

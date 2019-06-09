@@ -5,7 +5,7 @@ namespace DoorController
     public class SystemMessage : IMessage
     {
         public bool Finished { get; } = true;
-        public DateTime Time { get; private set; }
+        public DateTime TimeUtc { get; private set; }
         public MessageLevel Level { get; private set; }
 
         public string ShortText { get; private set; }
@@ -14,14 +14,14 @@ namespace DoorController
 
         public SystemMessage(MessageLevel type, string message)
         {
-            Time = DateTime.UtcNow;
+            TimeUtc = DateTime.UtcNow;
             Level = type;
             ShortText = message;
         }
 
         public SystemMessage(MessageLevel type, string message, string innerMessage)
         {
-            Time = DateTime.UtcNow;
+            TimeUtc = DateTime.UtcNow;
             Level = type;
             ShortText = message;
             InnerText = innerMessage;

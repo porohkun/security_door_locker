@@ -1,6 +1,6 @@
 ﻿namespace DoorController
 {
-    [StartByte(1)]
+    [StartByte(0x01)]
     public class InitStateMessage : StreamMessage
     {
         public DoorState State { get; private set; }

@@ -6,7 +6,7 @@
 void StateManagerClass::Init()
 {
 	Logger.TextMessage(MESSAGE_LEVEL_DEBUG, "StateManagerClass::Init()");
-	this->StartState(_currentState);
+	this->SwitchStateTo(STATE_LOCKED);
 }
 
 void StateManagerClass::Loop()
@@ -14,7 +14,9 @@ void StateManagerClass::Loop()
 	if (_isTimeouting)
 		_isTimeout = !_isTimeout && _timeout < millis();
 
-	if (!_isWrongState)
+	if (_isWrongState)
+		this->SwitchStateTo(STATE_LOCKED);
+	else
 		if (_currentState > _statesCount)
 		{
 			_isWrongState = true;
@@ -27,7 +29,8 @@ void StateManagerClass::Loop()
 void StateManagerClass::SwitchStateTo(byte state)
 {
 	byte oldState = _currentState;
-	this->StopState();
+	if (oldState != state)
+		this->StopState();
 	this->StartState(state);
 	Logger.StateChangedMessage(oldState, state);
 }

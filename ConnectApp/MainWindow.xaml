@@ -65,6 +65,7 @@
             <ColumnDefinition Width="10"/>
             <ColumnDefinition Width="40"/>
             <ColumnDefinition Width="80"/>
+            <ColumnDefinition Width="80"/>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="10"/>
         </Grid.ColumnDefinitions>
@@ -79,7 +80,14 @@
         </Grid.RowDefinitions>
         <TextBlock Grid.Column="1" Grid.Row="1" Text="Port:" Margin="0,0,4,0" HorizontalAlignment="Right" VerticalAlignment="Center"/>
         <ComboBox Grid.Column="2" Grid.Row="1" ItemsSource="{Binding PortsList}" SelectedItem="{Binding DoorController.PortName}"/>
-        <DockPanel Grid.Column="3" Grid.Row="1">
+        <ComboBox Grid.Column="3" Grid.Row="1" ItemsSource="{Binding MessageLevels}" HorizontalContentAlignment="Stretch">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <ToggleButton IsChecked="{Binding Show, Mode=TwoWay}" Content="{Binding}" HorizontalAlignment="Stretch"/>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+        <DockPanel Grid.Column="4" Grid.Row="1">
             <Button DockPanel.Dock="Right" Width="80" Content="Disconnect" IsEnabled="{Binding DoorController.Connected}" Click="DisconnectButton_Click"/>
             <Button DockPanel.Dock="Right" Width="80" Content="Connect" IsEnabled="{Binding DoorController.Connected, Converter={StaticResource ReverseBool}}" Click="ConnectButton_Click"/>
             <TextBlock DockPanel.Dock="Right" Text="{Binding DoorController.Connected}" HorizontalAlignment="Center" VerticalAlignment="Center"/>

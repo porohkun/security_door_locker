@@ -35,6 +35,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PresentationFramework.Aero2" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -80,6 +81,7 @@
   <ItemGroup>
     <Compile Include="HexWindowExample.cs" />
     <Compile Include="MainWindowExample.cs" />
+    <Compile Include="MessageLevelChecker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -106,5 +108,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <Import Project="..\DoorController\DoorController.projitems" Label="Shared" />
+  <Import Project="..\WPF.MyFlatTheme\WPF.MyFlatTheme.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

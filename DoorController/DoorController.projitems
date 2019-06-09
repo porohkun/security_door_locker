@@ -11,6 +11,13 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Controller.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MessageControl.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messages\DoorLockStartedMessage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messages\UnlockedWithTag.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messages\UnlockedWithoutTag.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messages\EEPROMClearedMessage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messages\TagRemovedMessage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messages\TagAuthMessage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messages\TagSavedMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\LogBlockMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\ExitStateMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Messages\AuthBlockMessage.cs" />

@@ -9,7 +9,7 @@
         ListenForEmpty = 0x04
     }
 
-    [StartByte(3)]
+    [StartByte(0x03)]
     public class StateChangedMessage : StreamMessage
     {
         public DoorState FromState { get; private set; }

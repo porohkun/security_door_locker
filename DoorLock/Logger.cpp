@@ -1,9 +1,11 @@
 #include "Arduino.h"
 #include "Logger.h"
 
-void LoggerClass::ActivateLogger()
+void LoggerClass::Started()
 {
-	TextMessage(MESSAGE_LEVEL_DEBUG, "!!! Activate Logger");
+	WriteHeader(STARTED_MESSAGE_HEADER, MESSAGE_LEVEL_SPECIAL, 0);
+
+	Serial.flush();
 }
 
 void LoggerClass::TextMessage(byte level, String message)
@@ -15,9 +17,16 @@ void LoggerClass::TextMessage(byte level, String message)
 	Serial.flush();
 }
 
+void LoggerClass::EEPROMClearedMessage()
+{
+	WriteHeader(EEPROM_CLEARED_MESSAGE_HEADER, MESSAGE_LEVEL_SPECIAL, 0);
+
+	Serial.flush();
+}
+
 void LoggerClass::InitStateMessage(byte state)
 {
-	WriteHeader(INIT_STATE_MESSAGE_HEADER, MESSAGE_LEVEL_SPECIAL, 1);
+	WriteHeader(INIT_STATE_MESSAGE_HEADER, MESSAGE_LEVEL_DEBUG, 1);
 
 	Serial.write(state);
 
@@ -26,7 +35,7 @@ void LoggerClass::InitStateMessage(byte state)
 
 void LoggerClass::ExitStateMessage(byte state)
 {
-	WriteHeader(EXIT_STATE_MESSAGE_HEADER, MESSAGE_LEVEL_SPECIAL, 1);
+	WriteHeader(EXIT_STATE_MESSAGE_HEADER, MESSAGE_LEVEL_DEBUG, 1);
 
 	Serial.write(state);
 
@@ -43,9 +52,46 @@ void LoggerClass::StateChangedMessage(byte fromState, byte toState)
 	Serial.flush();
 }
 
+void LoggerClass::TagSavedMessage(byte * uid, byte uidLen, byte index, byte result)
+{
+	WriteHeader(TAG_SAVED_MESSAGE_HEADER, MESSAGE_LEVEL_SPECIAL, uidLen + uidLen + 3);
+
+	Serial.write(uidLen); //write card uid length
+	WriteUint8Array(uid, uidLen); //write card uid
+	Serial.write(index);
+	Serial.write(result);
+
+	Serial.flush();
+}
+
+void LoggerClass::TagRemovedMessage(byte * uid, byte uidLen, byte index, byte result)
+{
+	WriteHeader(TAG_REMOVED_MESSAGE_HEADER, MESSAGE_LEVEL_SPECIAL, uidLen + uidLen + 3);
+
+	Serial.write(uidLen); //write card uid length
+	WriteUint8Array(uid, uidLen); //write card uid
+	Serial.write(index);
+	Serial.write(result);
+
+	Serial.flush();
+}
+
+void LoggerClass::TagAuthMessage(byte * uid, byte uidLen, byte index, byte uidOnly, byte result)
+{
+	WriteHeader(TAG_AUTH_MESSAGE_HEADER, MESSAGE_LEVEL_SPECIAL, uidLen + uidLen + 4);
+
+	Serial.write(uidLen); //write card uid length
+	WriteUint8Array(uid, uidLen); //write card uid
+	Serial.write(index);
+	Serial.write(uidOnly);
+	Serial.write(result);
+
+	Serial.flush();
+}
+
 void LoggerClass::AuthBlockMessage(byte * uid, byte uidLen, byte blockNumber, byte keyNumber, byte * keyData, byte keyDataLen, byte result)
 {
-	WriteHeader(AUTH_BLOCK_MESSAGE_HEADER, MESSAGE_LEVEL_SPECIAL, uidLen + keyDataLen + 5);
+	WriteHeader(AUTH_BLOCK_MESSAGE_HEADER, MESSAGE_LEVEL_DEBUG, uidLen + keyDataLen + 5);
 
 	Serial.write(uidLen); //write card uid length
 	WriteUint8Array(uid, uidLen); //write card uid
@@ -61,7 +107,7 @@ void LoggerClass::AuthBlockMessage(byte * uid, byte uidLen, byte blockNumber, by
 void LoggerClass::LogBlockMessage(byte blockNumber, String message, byte * data, byte result)
 {
 	int messageLen = message.length();
-	WriteHeader(LOG_BLOCK_MESSAGE, MESSAGE_LEVEL_DEBUG, messageLen + 16 + 4);
+	WriteHeader(LOG_BLOCK_MESSAGE_HEADER, MESSAGE_LEVEL_DEBUG, messageLen + 16 + 4);
 
 	Serial.write(blockNumber);
 	Serial.write(messageLen);
@@ -76,14 +122,22 @@ void LoggerClass::LogBlockMessage(byte blockNumber, String message, byte * data,
 
 
 
-void LoggerClass::LogUnlockWithTag(byte * uid)
+void LoggerClass::UnlockedWithTag(byte * uid, byte uidLen, byte result)
 {
-	TextMessage(MESSAGE_LEVEL_WARNING, "!!! Unlock With Tag");
+	WriteHeader(UNLOCKED_WITH_TAG_MESSAGE_HEADER, MESSAGE_LEVEL_SPECIAL, uidLen + 2);
+
+	Serial.write(uidLen); //write card uid length
+	WriteUint8Array(uid, uidLen); //write card uid
+	Serial.write(result);
+
+	Serial.flush();
 }
 
-void LoggerClass::LogUnlockWrongTag(byte * uid)
+void LoggerClass::UnlockedWithoutTag()
 {
-	TextMessage(MESSAGE_LEVEL_WARNING, "!!! Unlock Wrong Tag");
+	WriteHeader(UNLOCKED_WITHOUT_TAG_MESSAGE_HEADER, MESSAGE_LEVEL_SPECIAL, 0);
+
+	Serial.flush();
 }
 
 

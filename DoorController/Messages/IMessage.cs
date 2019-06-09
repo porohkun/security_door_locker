@@ -6,7 +6,7 @@ namespace DoorController
     public interface IMessage
     {
         bool Finished { get; }
-        DateTime Time { get; }
+        DateTime TimeUtc { get; }
         MessageLevel Level { get; }
         string ShortText { get; }
         string InnerText { get; }

@@ -5,7 +5,7 @@ namespace DoorController
     public class ConnectedMessage : IMessage
     {
         public bool Finished { get; } = true;
-        public DateTime Time { get; private set; }
+        public DateTime TimeUtc { get; private set; }
         public MessageLevel Level { get; private set; }
 
         public string ShortText { get; private set; }

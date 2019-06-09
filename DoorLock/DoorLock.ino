@@ -19,7 +19,6 @@ void setup()
 	pinMode(LED_BUTTON, OUTPUT);
 
 	Serial.begin(115200);
-	Logger.TextMessage(MESSAGE_LEVEL_DEBUG, "!!! Started");
 
 	//digitalWrite(UNLOCK_SIGNAL, HIGH);
 	//digitalWrite(LED_BUTTON, HIGH);
@@ -31,6 +30,7 @@ void setup()
 	Sound.PlayClosed();
 	StateManager.Init();
 
+	Logger.Started();
 }
 
 void loop()
@@ -40,7 +40,7 @@ void loop()
 		for (int i = 0; i < EEPROM.length(); i++)
 			EEPROM.write(i, 0);
 		Sound.PlayClosed();
-		Logger.TextMessage(MESSAGE_LEVEL_DEBUG, "!!! Clear EEPROM");
+		Logger.EEPROMClearedMessage();
 	}
 
 	Button.Loop();

@@ -4,150 +4,35 @@
              xmlns:local="clr-namespace:ConnectApp"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <Color x:Key="MessageLevel_Unknown_Color">Magenta</Color>
-        <Color x:Key="MessageLevel_Debug_Color">Gray</Color>
-        <Color x:Key="MessageLevel_Info_Color">White</Color>
-        <Color x:Key="MessageLevel_Warning_Color">Yellow</Color>
-        <Color x:Key="MessageLevel_Error_Color">Red</Color>
-        <Color x:Key="MessageLevel_Special_Color">Green</Color>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Wpf.MyFlatTheme/Colors/DarkColors.xaml"></ResourceDictionary>
+                <ResourceDictionary Source="../Wpf.MyFlatTheme/Controls/BaseButton.xaml"></ResourceDictionary>
+                <ResourceDictionary Source="../Wpf.MyFlatTheme/Controls/BaseComboBox.xaml"></ResourceDictionary>
+                <ResourceDictionary Source="../Wpf.MyFlatTheme/Controls/BaseTextBlock.xaml"></ResourceDictionary>
+                <ResourceDictionary Source="../Wpf.MyFlatTheme/Controls/BaseToggleButton.xaml"></ResourceDictionary>
+                <ResourceDictionary Source="../Wpf.MyFlatTheme/Controls/BaseWindow.xaml"></ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
 
-        <Color x:Key="White">#FFFFFF</Color>
-        <Color x:Key="LightLightGray">#F1F1F1</Color>
-        <Color x:Key="LightGray">#E1E1E1</Color>
-        <Color x:Key="Gray">#A1A1A1</Color>
-        <Color x:Key="MediumGray">#818181</Color>
-        <Color x:Key="DarkGray">#616161</Color>
-        <Color x:Key="MediumDarkGray">#515151</Color>
-        <Color x:Key="DarkDarkGray">#414141</Color>
-        <Color x:Key="HardDarkGray">#313131</Color>
-        <Color x:Key="Black">#000000</Color>
+            <Color x:Key="MessageLevel_Unknown_Color">Magenta</Color>
+            <Color x:Key="MessageLevel_Debug_Color">Gray</Color>
+            <Color x:Key="MessageLevel_Info_Color">White</Color>
+            <Color x:Key="MessageLevel_Warning_Color">Yellow</Color>
+            <Color x:Key="MessageLevel_Error_Color">Red</Color>
+            <Color x:Key="MessageLevel_Special_Color">Green</Color>
 
-        <Color x:Key="WhiteBlueGray">#CBEEFF</Color>
+            <SolidColorBrush x:Key="MessageLevel_Unknown_Brush" Color="{StaticResource MessageLevel_Unknown_Color}" />
+            <SolidColorBrush x:Key="MessageLevel_Debug_Brush" Color="{StaticResource MessageLevel_Debug_Color}" />
+            <SolidColorBrush x:Key="MessageLevel_Info_Brush" Color="{StaticResource MessageLevel_Info_Color}" />
+            <SolidColorBrush x:Key="MessageLevel_Warning_Brush" Color="{StaticResource MessageLevel_Warning_Color}" />
+            <SolidColorBrush x:Key="MessageLevel_Error_Brush" Color="{StaticResource MessageLevel_Error_Color}" />
+            <SolidColorBrush x:Key="MessageLevel_Special_Brush" Color="{StaticResource MessageLevel_Special_Color}" />
 
-        <Color x:Key="BlueGray2">#34637a</Color>
-        <Color x:Key="BlueGray1">#3a5765</Color>
-        <Color x:Key="BlueGray0">#3e4c54</Color>
+            <local:ReverseBooleanConverter x:Key="ReverseBool"/>
+            <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+            <local:MainWindowExample x:Key="MainWindowExample"/>
+            <local:HexWindowExample x:Key="HexWindowExample"/>
 
-        <Color x:Key="LightBlueGray2">#09aefd</Color>
-        <Color x:Key="LightBlueGray1">#26a0da</Color>
-        <Color x:Key="LightBlueGray0">#2f7fa6</Color>
-
-        <Color x:Key="LightLightBlue">#aad7ff</Color>
-        <Color x:Key="LightBlue">#7ac1ff</Color>
-        <Color x:Key="DarkBlue">#4479a7</Color>
-
-        <Color x:Key="LightLightGreen">#beebbc</Color>
-        <Color x:Key="LightGreen">#8dd28a</Color>
-        <Color x:Key="DarkGreen">#497646</Color>
-
-        <SolidColorBrush x:Key="MessageLevel_Unknown_Brush" Color="{StaticResource MessageLevel_Unknown_Color}" />
-        <SolidColorBrush x:Key="MessageLevel_Debug_Brush" Color="{StaticResource MessageLevel_Debug_Color}" />
-        <SolidColorBrush x:Key="MessageLevel_Info_Brush" Color="{StaticResource MessageLevel_Info_Color}" />
-        <SolidColorBrush x:Key="MessageLevel_Warning_Brush" Color="{StaticResource MessageLevel_Warning_Color}" />
-        <SolidColorBrush x:Key="MessageLevel_Error_Brush" Color="{StaticResource MessageLevel_Error_Color}" />
-        <SolidColorBrush x:Key="MessageLevel_Special_Brush" Color="{StaticResource MessageLevel_Special_Color}" />
-
-        <SolidColorBrush x:Key="WhiteBrush" Color="{StaticResource White}" />
-        <SolidColorBrush x:Key="BlackBrush" Color="{StaticResource Black}" />
-
-        <SolidColorBrush x:Key="PathMainBrush" Color="{StaticResource LightGray}" />
-        <SolidColorBrush x:Key="PathFocusedBrush" Color="{StaticResource WhiteBlueGray}" />
-        <SolidColorBrush x:Key="PathSelectedBrush" Color="{StaticResource LightBlue}" />
-        <SolidColorBrush x:Key="PathFocusedSelectedBrush" Color="{StaticResource LightLightBlue}" />
-        <SolidColorBrush x:Key="PathDisabledBrush" Color="{StaticResource MediumGray}" />
-
-        <SolidColorBrush x:Key="PlayBrush" Color="{StaticResource LightGreen}" />
-        <SolidColorBrush x:Key="PlayFocusedBrush" Color="{StaticResource LightLightGreen}" />
-        <SolidColorBrush x:Key="PlayDisabledBrush" Color="{StaticResource MediumGray}" />
-
-        <SolidColorBrush x:Key="PauseBrush" Color="{StaticResource LightBlue}" />
-        <SolidColorBrush x:Key="PauseFocusedBrush" Color="{StaticResource LightLightBlue}" />
-        <SolidColorBrush x:Key="PauseDisabledBrush" Color="{StaticResource MediumGray}" />
-
-        <SolidColorBrush x:Key="BorderMainBrush" Color="{StaticResource Gray}" />
-        <SolidColorBrush x:Key="BorderFocusedBrush" Color="{StaticResource LightBlueGray0}" />
-        <SolidColorBrush x:Key="BorderSelectedBrush" Color="{StaticResource LightBlueGray1}" />
-        <SolidColorBrush x:Key="BorderFocusedSelectedBrush" Color="{StaticResource LightBlueGray2}" />
-        <SolidColorBrush x:Key="BorderDisabledBrush" Color="{StaticResource MediumGray}" />
-
-        <SolidColorBrush x:Key="TextMainBrush" Color="{StaticResource LightLightGray}" />
-        <SolidColorBrush x:Key="TextFocusedBrush" Color="{StaticResource WhiteBlueGray}" />
-        <SolidColorBrush x:Key="TextSelectedBrush" Color="{StaticResource LightLightGray}" />
-        <SolidColorBrush x:Key="TextFocusedSelectedBrush" Color="{StaticResource White}" />
-        <SolidColorBrush x:Key="TextDisabledBrush" Color="{StaticResource MediumGray}" />
-
-        <SolidColorBrush x:Key="ButtonMainBrush" Color="{StaticResource DarkDarkGray}" />
-        <SolidColorBrush x:Key="ButtonFocusedBrush" Color="{StaticResource BlueGray0}" />
-        <SolidColorBrush x:Key="ButtonSelectedBrush" Color="{StaticResource BlueGray1}" />
-        <SolidColorBrush x:Key="ButtonFocusedSelectedBrush" Color="{StaticResource BlueGray2}" />
-        <SolidColorBrush x:Key="ButtonDisabledBrush" Color="{StaticResource DarkDarkGray}" />
-
-        <SolidColorBrush x:Key="BgrLightBrush" Color="{StaticResource DarkGray}" />
-        <SolidColorBrush x:Key="BgrMainBrush" Color="{StaticResource DarkDarkGray}" />
-        <SolidColorBrush x:Key="BgrDarkBrush" Color="{StaticResource HardDarkGray}" />
-        <SolidColorBrush x:Key="BgrFocusedBrush" Color="{StaticResource MediumDarkGray}" />
-        
-        <local:ReverseBooleanConverter x:Key="ReverseBool"/>
-        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
-        <local:MainWindowExample x:Key="MainWindowExample"/>
-        <local:HexWindowExample x:Key="HexWindowExample"/>
-
-        <Style TargetType="{x:Type Window}" x:Key="BaseWindowStyle">
-            <Setter Property="Background" Value="{StaticResource BgrMainBrush}"/>
-            <Setter Property="WindowStyle" Value="ToolWindow"/>
-        </Style>
-        <Style TargetType="TextBlock">
-            <Setter Property="Foreground" Value="{StaticResource TextMainBrush}"/>
-            <Style.Triggers>
-                <Trigger Property="IsEnabled" Value="False">
-                    <Setter Property="Foreground" Value="{StaticResource TextDisabledBrush}" />
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-        <Style x:Key="GrayButton" TargetType="Button">
-            <Setter Property="Foreground" Value="{StaticResource TextMainBrush}"/>
-            <Setter Property="Background" Value="{StaticResource ButtonMainBrush}"/>
-            <Setter Property="BorderBrush" Value="{StaticResource BorderMainBrush}"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="SnapsToDevicePixels" Value="True" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <Border x:Name="Part_Border"
-                                    BorderThickness="{TemplateBinding BorderThickness}"
-                                    Background="{TemplateBinding Background}"
-                                    BorderBrush="{TemplateBinding BorderBrush}">
-                            <ContentPresenter x:Name="Part_ContentPresenter" RecognizesAccessKey="True"
-                                                  Content="{TemplateBinding ContentControl.Content}"
-                                                  ContentTemplate="{TemplateBinding ContentControl.ContentTemplate}"
-                                                  ContentStringFormat="{TemplateBinding ContentControl.ContentStringFormat}"
-                                                  Margin="{TemplateBinding Control.Padding}"
-                                                  HorizontalAlignment="{TemplateBinding Control.HorizontalContentAlignment}"
-                                                  VerticalAlignment="{TemplateBinding Control.VerticalContentAlignment}"
-                                                  SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}" />
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Foreground" Value="{StaticResource TextFocusedBrush}" />
-                    <Setter Property="Background" Value="{StaticResource ButtonFocusedBrush}" />
-                    <Setter Property="BorderBrush" Value="{StaticResource BorderFocusedBrush}" />
-                </Trigger>
-                <Trigger Property="IsPressed" Value="True">
-                    <Setter Property="Foreground" Value="{StaticResource TextMainBrush}" />
-                    <Setter Property="Background" Value="{StaticResource ButtonMainBrush}" />
-                    <Setter Property="BorderBrush" Value="{StaticResource BorderMainBrush}" />
-                </Trigger>
-                <Trigger Property="IsEnabled" Value="False">
-                    <Setter Property="Foreground" Value="{StaticResource TextDisabledBrush}" />
-                    <Setter Property="Background" Value="{StaticResource ButtonDisabledBrush}" />
-                    <Setter Property="BorderBrush" Value="{StaticResource BorderDisabledBrush}" />
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-        <Style TargetType="Button" BasedOn="{StaticResource GrayButton}"/>
-        
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

@@ -63,7 +63,7 @@ namespace DoorController
             var value = e.NewValue as IMessage;
 
             control.Finished = value.Finished;
-            control.Time = value.Time;
+            control.Time = value.TimeUtc;
             control.Level = value.Level;
             control.ShortText = value.ShortText;
             control.InnerText = value.InnerText;

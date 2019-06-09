@@ -7,7 +7,7 @@ namespace DoorController
     public abstract class StreamMessage : IMessage
     {
         public bool Finished { get; protected set; }
-        public DateTime Time { get; private set; }
+        public DateTime TimeUtc { get; private set; }
         public MessageLevel Level { get; private set; }
 
         public string ShortText { get; protected set; }
@@ -19,7 +19,7 @@ namespace DoorController
 
         public void Read(MessageLevel level, byte[] buffer)
         {
-            Time = DateTime.UtcNow;
+            TimeUtc = DateTime.UtcNow;
             Level = level;
             _length = buffer.Length;
             using (_stream = new MemoryStream(buffer))

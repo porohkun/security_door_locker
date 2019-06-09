@@ -2,7 +2,7 @@
 
 namespace DoorController
 {
-    [StartByte(0)]
+    [StartByte(0x00)]
     public class TextMessage : StreamMessage
     {
         protected override void Read()

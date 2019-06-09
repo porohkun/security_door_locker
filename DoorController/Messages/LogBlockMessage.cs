@@ -1,6 +1,6 @@
 ﻿namespace DoorController
 {
-    [StartByte(5)]
+    [StartByte(0x05)]
     public class LogBlockMessage : StreamMessage
     {
         public byte Block { get; private set; }
